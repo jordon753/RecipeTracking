@@ -1,9 +1,12 @@
 package com.example.recipetracking
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.recipetracking.ui.theme.RecipeTrackingTheme
@@ -39,6 +44,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+private val image_ids = listOf(
+    R.drawable.dice_1,
+    R.drawable.dice_2,
+    R.drawable.dice_3,
+    R.drawable.dice_4,
+    R.drawable.dice_5,
+    R.drawable.dice_6
+)
 
 @Composable
 fun Recipe(name: String, modifier: Modifier = Modifier) {
@@ -46,9 +59,17 @@ fun Recipe(name: String, modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize()
     ) {
         Column(modifier = Modifier.fillMaxHeight().width(100.dp).background(Color.Magenta),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "column 1")
+            verticalArrangement = Arrangement.SpaceEvenly){
+            repeat(6) {
+                val context = LocalContext.current
+                Image(
+                    painter = painterResource(image_ids[it]),
+                    contentDescription = "Dice $it",
+                    modifier.clickable {
+                        Toast.makeText(context, "click $it", Toast.LENGTH_LONG).show()
+                    }
+                )
+            }
         }
         Column(modifier = Modifier.fillMaxHeight().width(100.dp).background(Color.Cyan),
             verticalArrangement = Arrangement.Center,
@@ -63,13 +84,14 @@ fun Recipe(name: String, modifier: Modifier = Modifier) {
 
     }
 }
-
+//test another screen
 
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun TestPreview() {
     RecipeTrackingTheme {
         Recipe("Android")
     }
 }
+
